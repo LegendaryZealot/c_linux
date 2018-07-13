@@ -1,5 +1,4 @@
 # C_FUNCTION
 ### Linux c functions demo
-fcanf
-,popen
-,fork
+### All the functions is running on linux
+### Tested on Ubuntu 16lts
