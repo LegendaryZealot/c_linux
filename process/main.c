@@ -6,7 +6,8 @@
 
 int main(int argc, char const *argv[])
 {
-    for(int i=0;i<100;i++)
+    printf("progress start...\r\n");
+    for(int i=0;i<101;i++)
     {
         if(i<10)
         {
@@ -16,8 +17,8 @@ int main(int argc, char const *argv[])
         {
             PrintProgress(i);
         }
-        sleep(1);
+        usleep(10000);
     }
-    printf("\n");
+    printf("\r\ndone\n");
     return 0;
 }
