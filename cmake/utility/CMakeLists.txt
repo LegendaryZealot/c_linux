@@ -1,0 +1,2 @@
+FILE(GLOB SOURCE "./*.c")
+ADD_LIBRARY(utility STATIC ${SOURCE})
