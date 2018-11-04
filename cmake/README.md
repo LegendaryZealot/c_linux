@@ -1,6 +1,6 @@
-cd cmake
-mkdir bulid
-cd build 
-cmake ..
-make
-../bin/app
+# cd cmake
+# mkdir bulid
+# cd build 
+# cmake ..
+# make
+# ../bin/app
