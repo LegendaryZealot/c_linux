@@ -1,0 +1,34 @@
+TARGET  := app
+
+SOURCE  := $(wildcard *.c) $(wildcard *.cpp)
+OBJS    := $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(SOURCE)))
+
+CC      := gcc
+LIBS    := -L. -ltest
+LDFLAGS :=
+INCLUDE := -I.
+CFLAGS  := -g -Wall -O3 $(DEFINES) $(INCLUDE)
+CXXFLAGS:= $(CFLAGS) -DHAVE_CONFIG_H
+
+.PHONY : everything objs clean veryclean rebuild
+
+everything : $(TARGET)
+
+all : $(TARGET)
+
+run:everything
+	LD_LIBRARY_PATH=. ./$(TARGET)
+
+objs : $(OBJS)
+
+rebuild: veryclean everything
+	
+clean :
+	-rm -f $(OBJS)
+    
+veryclean : clean
+	-rm -f $(TARGET)
+	rm -f *so
+  
+$(TARGET) : $(OBJS)
+	$(CC) $(CXXFLAGS) -o $@ $(OBJS) $(LDFLAGS) $(LIBS)
