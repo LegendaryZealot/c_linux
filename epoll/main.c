@@ -21,8 +21,8 @@
 int currentClient = 0; 
  
 //数据接受 buf
-#define REVLEN 10
-char recvBuf[REVLEN];
+#define REVLEN 1000
+char recvBuf[REVLEN+1];
  
  
 //epoll描述符
@@ -150,7 +150,7 @@ void AcceptConn(int srvfd)
        return;
     }else
     {
-        printf("Accept Connection: %d", confd);
+        printf("Accept Connection: %d\n", confd);
     }
     //将新建立的连接添加到EPOLL的监听中
     struct epoll_event event;
@@ -164,41 +164,24 @@ void RecvData(int fd)
 {
     int ret;
     int recvLen = 0;
-    
+    const int msgLen=10;
     memset(recvBuf, 0, REVLEN);
     printf("RecvData function\n");
-    
-    if(recvLen != REVLEN)
+    while (0<(ret=recv(fd, (char *)recvBuf+recvLen, msgLen, MSG_CMSG_CLOEXEC)))
     {
-        while(1)
-        {
-            //recv数据
-            ret = recv(fd, (char *)recvBuf+recvLen, REVLEN-recvLen, 0);
-            if(ret == 0)
-            {
-                recvLen = 0;
-                break;
-            }
-            else if(ret < 0)
-            {
-                recvLen = 0;
-                break;
-            }
-            //数据接受正常
-            recvLen = recvLen+ret;
-            if(recvLen<REVLEN)
-            {
-                continue;
-            }
-            else
-            {
-                //数据接受完毕
-                printf("buf = %s\n",  recvBuf);
-                recvLen = 0;
-                break;
-            }
+        if(0==ret){
+            struct epoll_event event;
+            event.data.fd = fd;
+            event.events =  EPOLLIN|EPOLLET;
+            epoll_ctl(epollfd, EPOLL_CTL_DEL, fd, &event);
+        }else if(0>ret){
+            printf("socket fd read error code:%d\n",ret);
+            return;
+        }else if(msgLen>ret){
+            close(fd);
+            break;
         }
+        recvLen+=ret;
     }
- 
-    printf("data is %s", recvBuf);
+    printf("data is:%s\n", recvBuf);
 }
