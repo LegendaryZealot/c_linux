@@ -5,6 +5,7 @@
  #define LIB_CACULATE_PATH "./libcaculate.so"
  
  typedef int (*CAC_FUNC)(int, int);
+ typedef void (*CAC_VOID_FUNC)();
 
  void test(){
      printf("test done\n");
@@ -15,6 +16,7 @@
      void *handle;
      char *error;
      CAC_FUNC cac_func = NULL;
+     CAC_VOID_FUNC cac_void_func=NULL;
  
      //打开动态链接库
      handle = dlopen(LIB_CACULATE_PATH, RTLD_LAZY);
@@ -42,6 +44,10 @@
  
      cac_func = (CAC_FUNC)dlsym(handle, "div");
      printf("div: %d\n", cac_func(8,2));
+
+
+     *(void **) (&cac_void_func) = dlsym(handle, "callFuncInMain");
+     cac_void_func();
  
      //关闭动态链接库
      dlclose(handle);
