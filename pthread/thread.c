@@ -1,9 +1,6 @@
-#include <iostream>
-#include <cstdlib>
+#include <stdio.h>
 #include <pthread.h>
 #include <unistd.h>
- 
-using namespace std;
  
 #define NUM_THREADS     5
  
@@ -15,8 +12,8 @@ void *wait(void *t)
    tid = (long)t;
  
    sleep(1);
-   cout << "Sleeping in thread " << endl;
-   cout << "Thread with id : " << tid << "  ...exiting " << endl;
+   printf("Sleeping in thread\n");
+   printf("Thread with id : %d ...exiting\n",tid);
    pthread_exit(NULL);
 }
  
@@ -33,10 +30,10 @@ int main ()
    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
  
    for( i=0; i < NUM_THREADS; i++ ){
-      cout << "main() : creating thread, " << i << endl;
+      printf("main() : creating thread, %d \n",i);
       rc = pthread_create(&threads[i], NULL, wait, (void *)&i );
       if (rc){
-         cout << "Error:unable to create thread," << rc << endl;
+         printf("Error:unable to create thread, %d\n",rc);
          exit(-1);
       }
    }
@@ -46,13 +43,13 @@ int main ()
    for( i=0; i < NUM_THREADS; i++ ){
       rc = pthread_join(threads[i], &status);
       if (rc){
-         cout << "Error:unable to join," << rc << endl;
+         printf("Error:unable to join");
          exit(-1);
       }
-      cout << "Main: completed thread id :" << i ;
-      cout << "  exiting with status :" << status << endl;
+      printf("Main: completed thread id :%d\n",i);
+      printf("exiting with status :%d\n",status);
    }
  
-   cout << "Main: program exiting." << endl;
+   printf("Main: program exiting.\n");
    pthread_exit(NULL);
 }
