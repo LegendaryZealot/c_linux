@@ -2,6 +2,10 @@
 #include <string.h>
 #include <errno.h>
 
+#include <errno.h>
+// extern int errno;
+// printf("sterror:%s\n",strerror(errno));
+
 
 int main(int argc, char const *argv[])
 {

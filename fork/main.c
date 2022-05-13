@@ -4,6 +4,8 @@
 #include<errno.h>
 #include<stdlib.h>
 
+extern int errno;
+
 int main ()
 {
   int a = 5;
