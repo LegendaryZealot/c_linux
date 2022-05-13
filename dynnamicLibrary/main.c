@@ -1,4 +1,6 @@
-#include "lib/test.h"
+#include <stdio.h>
+
+#include <lib/test.h>
 
 int main(int argc, char const *argv[])
 {
